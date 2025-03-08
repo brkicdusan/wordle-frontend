@@ -1,0 +1,77 @@
+<script lang="ts">
+	import List from './List.svelte';
+	import Keyboard from '../../../node_modules/svelte-keyboard';
+	import { toast } from '@zerodevx/svelte-toast';
+
+	let word = $state('');
+	let correct = 'ABCDE';
+	let wordlist: string[] = $state([]);
+
+	const onKeyboardEvent = ({ detail: key }: { detail: string }) => {
+		if (key == 'Enter') {
+			handleEnter();
+		} else if (key == 'Backspace') {
+			if (word.length > 0) {
+				word = word.substring(0, word.length - 1);
+			}
+		} else if (isLetter(key)) {
+			if (word.length < 5) {
+				word = word + key.toUpperCase();
+			}
+		}
+	};
+
+	const onKeyDown = (event: KeyboardEventInit) => {
+		let key = event.key || '';
+
+		if (key == 'Enter' || key == 'Backspace' || isLetter(key)) {
+			onKeyboardEvent({ detail: key });
+		}
+	};
+
+	const isLetter = (str: string) => {
+		return /[a-zA-Z]/.test(str) && str.length == 1;
+	};
+
+	const handleEnter = () => {
+		if (!checkWord(word)) {
+			return;
+		}
+		wordlist.push(word);
+		word = '';
+	};
+
+	const checkWord = (word: string) => {
+		let duration = 2000;
+		if (word.length != 5) {
+			toast.push('Not enough letters', {
+				duration
+			});
+			return false;
+		} else if (false) {
+			// TODO: word does not exist
+			toast.push('Not in the word list', { duration });
+		}
+		return true;
+	};
+</script>
+
+<svelte:head>
+	<title>Wordle</title>
+</svelte:head>
+
+<svelte:window on:keydown={onKeyDown} />
+
+<div>
+	<List {correct} size={6} {wordlist} current={word} />
+	<Keyboard custom="" layout="wordle" on:keydown={onKeyboardEvent} --text-transform="uppercase" />
+</div>
+
+<style>
+	div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 5rem;
+	}
+</style>
