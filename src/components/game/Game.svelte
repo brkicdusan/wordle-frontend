@@ -60,11 +60,20 @@
 	<title>Wordle</title>
 </svelte:head>
 
-<svelte:window on:keydown={onKeyDown} />
+<svelte:window on:keydown|preventDefault={onKeyDown} />
 
 <div>
 	<List {correct} size={6} {wordlist} current={word} />
-	<Keyboard custom="" layout="wordle" on:keydown={onKeyboardEvent} --text-transform="uppercase" />
+	<Keyboard
+		custom=""
+		layout="wordle"
+		on:keydown={onKeyboardEvent}
+		--text-transform="uppercase"
+		--background="var(--button-color)"
+		--color="var(--text-color)"
+		--border-radius="8px"
+		--flex="0 auto"
+	/>
 </div>
 
 <style>
@@ -72,6 +81,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 5rem;
+		justify-content: space-around;
+		height: 100%;
 	}
 </style>

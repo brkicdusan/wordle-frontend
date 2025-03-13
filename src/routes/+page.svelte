@@ -15,6 +15,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 100px;
+		flex-grow: 1;
+		background-color: var(--background-color);
 	}
 </style>

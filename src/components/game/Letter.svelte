@@ -32,28 +32,27 @@
 	}
 
 	.empty {
-		border: 2px solid gray;
+		border: 2px solid var(--empty-border-color);
 		color: black;
 	}
 
 	.filled {
-		border: 2px solid black;
-		color: black;
+		border: 2px solid var(--text-color);
+		color: var(--text-color);
 	}
 
 	.wrong {
-		background-color: gray;
-		color: white;
+		background-color: var(--wrong-color);
+		color: var(--text-contrast-color);
 	}
 
 	.yellow {
-		background-color: #ba8e23;
-		background-color: #ffdb58;
-		color: white;
+		background-color: var(--yellow-color);
+		color: var(--text-contrast-color);
 	}
 
 	.green {
-		background-color: green;
-		color: white;
+		background-color: var(--correct-color);
+		color: var(--text-contrast-color);
 	}
 </style>
