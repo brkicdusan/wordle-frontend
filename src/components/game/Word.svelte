@@ -25,7 +25,7 @@
 		if (!entered) {
 			return 'filled';
 		}
-		if (word[index] == correct[index]) {
+		if (word[index].toLowerCase() == correct[index].toLowerCase()) {
 			return 'green';
 		}
 

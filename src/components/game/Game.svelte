@@ -2,9 +2,15 @@
 	import List from './List.svelte';
 	import Keyboard from '../../../node_modules/svelte-keyboard';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { isValid } from '$lib/wordCheck';
 
 	let word = $state('');
-	let correct = 'ABCDE';
+	let {
+		correct
+	}: {
+		correct: string;
+	} = $props();
+
 	let wordlist: string[] = $state([]);
 
 	const onKeyboardEvent = ({ detail: key }: { detail: string }) => {
@@ -48,9 +54,9 @@
 				duration
 			});
 			return false;
-		} else if (false) {
-			// TODO: word does not exist
+		} else if (!isValid(word)) {
 			toast.push('Not in the word list', { duration });
+			return false;
 		}
 		return true;
 	};

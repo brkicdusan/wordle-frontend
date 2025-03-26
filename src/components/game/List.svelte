@@ -11,7 +11,7 @@
 
 	let last: number = $derived.by(() => {
 		for (let i = 0; i < wordlist.length; i++) {
-			if (wordlist[i] == correct) {
+			if (wordlist[i].toLowerCase() == correct.toLowerCase()) {
 				return i;
 			}
 		}

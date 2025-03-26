@@ -11,5 +11,6 @@ export default defineConfig({
 			cert: fs.readFileSync(`${__dirname}/cert/cert.pem`)
 		},
 		proxy: {}
-	}
+	},
+	assetsInclude: ['**/*.txt']
 });

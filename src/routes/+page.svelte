@@ -7,7 +7,7 @@
 </svelte:head>
 
 <main>
-	<Game />
+	<Game correct="learn" />
 </main>
 
 <style>
