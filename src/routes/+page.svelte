@@ -1,5 +1,8 @@
 <script lang="ts">
 	import Game from '../components/game/Game.svelte';
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
 </script>
 
 <svelte:head>
@@ -7,7 +10,7 @@
 </svelte:head>
 
 <main>
-	<Game correct="learn" />
+	<Game correct={data.correct.toUpperCase()} />
 </main>
 
 <style>

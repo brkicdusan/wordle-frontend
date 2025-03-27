@@ -6,3 +6,12 @@ export const actions = {
 		cookies.set('theme', theme.toString(), { path: '/', maxAge: 60 * 60 * 24 * 365 });
 	}
 };
+
+export const load = () => {
+	const options = ['learn', 'words', 'light'];
+	const correct = options[Math.floor(Math.random() * options.length)];
+
+	return {
+		correct
+	};
+};
