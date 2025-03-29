@@ -1,3 +1,5 @@
+import { error } from '@sveltejs/kit';
+
 export const actions = {
 	setTheme: async ({ cookies, request }) => {
 		const formData = await request.formData();
@@ -7,11 +9,16 @@ export const actions = {
 	}
 };
 
-export const load = () => {
-	const options = ['learn', 'words', 'light'];
-	const correct = options[Math.floor(Math.random() * options.length)];
+export const load = async () => {
+	const backendUrl = import.meta.env.VITE_BACKEND_URL;
+	const resp = await fetch(backendUrl);
+	const word = await resp.json();
+
+	if (typeof word !== 'string') {
+		error(400, 'backend not found');
+	}
 
 	return {
-		correct
+		correct: word
 	};
 };
