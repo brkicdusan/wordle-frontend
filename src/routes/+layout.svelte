@@ -8,7 +8,9 @@
 
 <div class={theme}>
 	<Navbar bind:theme />
-	{@render children()}
+	<main>
+		{@render children()}
+	</main>
 	<SvelteToast />
 </div>
 
@@ -67,5 +69,13 @@
 			--wrong-color: #3a3a3c;
 			--button-color: #282828;
 		}
+	}
+
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex-grow: 1;
+		background-color: var(--background-color);
 	}
 </style>

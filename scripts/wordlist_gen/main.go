@@ -12,21 +12,22 @@ import (
 )
 
 func main() {
-	var language string
 	var dest string
 	var source_dir string
 
-	flag.StringVar(&language,
-		"language", "english", "language")
 	flag.StringVar(&dest,
 		"destination", "../../src/lib/", "destination folder")
 	flag.StringVar(&source_dir, "source", ".", "source directory")
 
 	flag.Parse()
 
-	err := handleLanguage(source_dir, language, dest)
-	if err != nil {
-		log.Fatal(err)
+	languages := []string{"english", "serbian"}
+
+	for _, language := range languages {
+		err := handleLanguage(source_dir, language, dest)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 

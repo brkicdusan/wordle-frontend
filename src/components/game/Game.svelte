@@ -2,7 +2,7 @@
 	import List from './List.svelte';
 	import Keyboard from '../../../node_modules/svelte-keyboard';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { isValid } from '$lib/wordCheck';
+	import { isValidEnglish } from '$lib/wordCheck';
 
 	let word = $state('');
 	let {
@@ -54,7 +54,7 @@
 				duration
 			});
 			return false;
-		} else if (!isValid(word)) {
+		} else if (!isValidEnglish(word)) {
 			toast.push('Not in the word list', { duration });
 			return false;
 		}

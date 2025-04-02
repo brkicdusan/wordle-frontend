@@ -9,16 +9,4 @@
 	<title>Wordle</title>
 </svelte:head>
 
-<main>
-	<Game correct={data.correct.toUpperCase()} />
-</main>
-
-<style>
-	main {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		flex-grow: 1;
-		background-color: var(--background-color);
-	}
-</style>
+<Game correct={data.correct.toUpperCase()} />
