@@ -41,6 +41,7 @@
 	"dependencies": {
 		"@lucide/svelte": "^0.479.0",
 		"micromodal": "^0.4.10",
+		"serbian-script-converter": "^1.1.2",
 		"svelte-keyboard": "^0.5.5"
 	}
 }

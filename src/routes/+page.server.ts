@@ -11,11 +11,12 @@ export const actions = {
 
 export const load = async () => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
-	const resp = await fetch(backendUrl);
+	const url = backendUrl + '/' + 'en';
+	const resp = await fetch(url);
 	const word = await resp.json();
 
 	if (typeof word !== 'string') {
-		error(400, 'backend not found');
+		error(500, 'backend not found');
 	}
 
 	return {
