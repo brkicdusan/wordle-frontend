@@ -4,11 +4,14 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Navbar from '../components/header/Header.svelte';
 	let theme = $state(data.theme);
+	let lang = $state(data.lang);
 </script>
 
 <div class={theme}>
-	<Navbar bind:theme />
+	<Navbar bind:theme bind:lang />
 	<main>
+		{lang}
+		{theme}
 		{@render children()}
 	</main>
 	<SvelteToast />
@@ -33,6 +36,7 @@
 		--correct-color: #73b851;
 		--yellow-color: #f3c237;
 		--wrong-color: gray;
+		--button-color: #efefef;
 	}
 
 	.dark {
@@ -55,6 +59,7 @@
 			--correct-color: #73b851;
 			--yellow-color: #f3c237;
 			--wrong-color: gray;
+			--button-color: #efefef;
 		}
 	}
 

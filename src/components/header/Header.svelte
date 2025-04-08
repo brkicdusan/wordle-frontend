@@ -2,18 +2,29 @@
 	import SettingsModal from './SettingsModal.svelte';
 	import MicroModal from 'micromodal';
 	import { Settings } from '@lucide/svelte';
+	import LanguageSwitcher from './LanguageSwitcher.svelte';
 
-	let { theme = $bindable() } = $props();
+	let { theme = $bindable(), lang = $bindable() } = $props();
 </script>
 
 <SettingsModal bind:theme />
 <nav>
-	<h1>Wordle</h1>
+	<div class="left">
+		<h1>Wordle</h1>
+		<LanguageSwitcher bind:lang />
+	</div>
 
 	<button onclick={() => MicroModal.show('modal-settings')} tabindex="-1"><Settings /></button>
 </nav>
 
 <style>
+	.left {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 20px;
+	}
+
 	nav {
 		height: 50px;
 		border-bottom: var(--text-color) solid 1px;
