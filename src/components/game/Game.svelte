@@ -4,6 +4,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { isLetterEnglish, isLetterSerbian, isValidEnglish, isValidSerbian } from '$lib/wordCheck';
 	import { serbianCyrillicKeys } from '$lib/keyboard';
+	import { goto } from '$app/navigation';
 
 	let {
 		correct,
@@ -15,6 +16,7 @@
 
 	let word = $state('');
 	let wordlist: string[] = $state([]);
+	let gameState = $state(0); // 0 - playing, 1 - won, 2 - lost
 
 	let keyClass = $derived.by(() => {
 		let res: Record<string, string> = {};
@@ -29,6 +31,8 @@
 	});
 
 	const onKeyboardEvent = ({ detail: key }: { detail: string }) => {
+		if (gameState) return;
+
 		if (key == 'Enter') {
 			handleEnter();
 		} else if (key == 'Backspace') {
@@ -56,6 +60,7 @@
 		}
 		wordlist.push(word);
 		word = '';
+		checkGameover();
 	};
 
 	const checkWord = (word: string) => {
@@ -77,16 +82,35 @@
 	const isValid = (word: string): boolean => {
 		return lang === 'en' ? isValidEnglish(word) : isValidSerbian(word);
 	};
-</script>
 
-<svelte:head>
-	<title>Wordle</title>
-</svelte:head>
+	const checkGameover = () => {
+		for (let word of wordlist) {
+			if (word.toLowerCase() === correct.toLowerCase()) {
+				gameState = 1;
+				return;
+			}
+		}
+
+		if (wordlist.length >= 6) {
+			gameState = 2;
+		}
+	};
+</script>
 
 <svelte:window on:keydown|preventDefault={onKeyDown} />
 
-{correct}
-<div>
+<div class="gameover" class:hidden-div={gameState === 0}>
+	<h1>{gameState === 1 ? 'You Won!' : 'You lost.'}</h1>
+	<button
+		onclick={() => {
+			const url = `/${lang}/game`;
+			goto(url, {
+				invalidateAll: true
+			});
+		}}>Play again</button
+	>
+</div>
+<div class="game">
 	<List {correct} size={6} {wordlist} current={word} />
 	<Keyboard
 		{keyClass}
@@ -102,7 +126,42 @@
 </div>
 
 <style>
-	div {
+	.gameover {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		margin: 10px;
+	}
+
+	.gameover h1 {
+		font-weight: bold;
+		font-size: 1.2rem;
+	}
+
+	button {
+		padding: 0.5em 1em;
+		border: 3px solid var(--text-color);
+		color: var(--text-color);
+		border-radius: 5px;
+		font-size: 1rem;
+		transition: background-color 0.2s ease;
+		text-transform: uppercase;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	button:hover,
+	button:focus {
+		color: var(--background-color);
+		background-color: var(--text-color);
+	}
+
+	.hidden-div {
+		visibility: hidden;
+	}
+
+	.game {
 		display: flex;
 		flex-direction: column;
 		align-items: center;

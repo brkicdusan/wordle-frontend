@@ -10,7 +10,9 @@
 <SettingsModal bind:theme />
 <nav>
 	<div class="left">
-		<h1>Wordle</h1>
+		<a href="/">
+			<h1>Wordle</h1>
+		</a>
 		<LanguageSwitcher bind:lang />
 	</div>
 

@@ -7,11 +7,13 @@
 	let lang = $state(data.lang);
 </script>
 
+<svelte:head>
+	<title>Wordle</title>
+</svelte:head>
+
 <div class={theme}>
 	<Navbar bind:theme bind:lang />
 	<main>
-		{lang}
-		{theme}
 		{@render children()}
 	</main>
 	<SvelteToast />
@@ -82,5 +84,6 @@
 		align-items: center;
 		flex-grow: 1;
 		background-color: var(--background-color);
+		color: var(--text-color);
 	}
 </style>
