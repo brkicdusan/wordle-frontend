@@ -101,7 +101,7 @@
 <svelte:window on:keydown|preventDefault={onKeyDown} />
 
 <div class="gameover" class:hidden-div={gameState === 0}>
-	<h1>{gameState === 1 ? 'You Won!' : 'You lost.'}</h1>
+	<h1>{gameState === 1 ? 'You Won!' : `You lost. Correct word was ${correct}`}</h1>
 	<button
 		onclick={() => {
 			const url = `/${lang}/game`;
@@ -123,10 +123,27 @@
 		--color="var(--text-color)"
 		--border-radius="8px"
 		--flex="0 auto"
+		--min-width="var(--responsive-key-size)"
 	/>
 </div>
 
 <style>
+	div {
+		--responsive-key-size: 2rem;
+	}
+
+	@media (max-width: 768px) {
+		div {
+			--responsive-key-size: 1.8rem;
+		}
+	}
+
+	@media (max-width: 768px) {
+		div {
+			--responsive-key-size: 1.6rem;
+		}
+	}
+
 	.gameover {
 		display: flex;
 		flex-direction: column;
