@@ -23,7 +23,8 @@
 
 		for (const word of wordlist) {
 			for (const char of word) {
-				res[char.toLowerCase()] = 'clicked';
+				const key = lang === 'sr' ? char.toUpperCase() : char.toLowerCase();
+				res[key] = 'clicked';
 			}
 		}
 
