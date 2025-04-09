@@ -22,3 +22,12 @@ export const isValidSerbian = (word: string) => {
 	word = latinToCyrilic(word);
 	return reci.includes(word);
 };
+
+export const isLetterEnglish = (str: string) => {
+	return /[a-zA-Z]/.test(str) && str.length === 1;
+};
+
+export const isLetterSerbian = (str: string) => {
+	const cyrillicRegex = /^\p{Script=Cyrillic}+$/u;
+	return cyrillicRegex.test(str) && str.length === 1;
+};

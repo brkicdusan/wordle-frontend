@@ -2,25 +2,44 @@
 	import List from './List.svelte';
 	import Keyboard from '../../../node_modules/svelte-keyboard';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { isValidEnglish } from '$lib/wordCheck';
+	import { isLetterEnglish, isLetterSerbian, isValidEnglish, isValidSerbian } from '$lib/wordCheck';
+	import { serbianCyrillicKeys } from '$lib/keyboard';
+	import { goto } from '$app/navigation';
 
-	let word = $state('');
 	let {
-		correct
+		correct,
+		lang
 	}: {
 		correct: string;
+		lang: string;
 	} = $props();
 
+	let word = $state('');
 	let wordlist: string[] = $state([]);
+	let gameState = $state(0); // 0 - playing, 1 - won, 2 - lost
+
+	let keyClass = $derived.by(() => {
+		let res: Record<string, string> = {};
+
+		for (const word of wordlist) {
+			for (const char of word) {
+				res[char.toLowerCase()] = 'clicked';
+			}
+		}
+
+		return res;
+	});
 
 	const onKeyboardEvent = ({ detail: key }: { detail: string }) => {
+		if (gameState) return;
+
 		if (key == 'Enter') {
 			handleEnter();
 		} else if (key == 'Backspace') {
 			if (word.length > 0) {
 				word = word.substring(0, word.length - 1);
 			}
-		} else if (isLetter(key)) {
+		} else if (letterCheck(key)) {
 			if (word.length < 5) {
 				word = word + key.toUpperCase();
 			}
@@ -30,13 +49,9 @@
 	const onKeyDown = (event: KeyboardEventInit) => {
 		let key = event.key || '';
 
-		if (key == 'Enter' || key == 'Backspace' || isLetter(key)) {
+		if (key == 'Enter' || key == 'Backspace' || letterCheck(key)) {
 			onKeyboardEvent({ detail: key });
 		}
-	};
-
-	const isLetter = (str: string) => {
-		return /[a-zA-Z]/.test(str) && str.length == 1;
 	};
 
 	const handleEnter = () => {
@@ -45,33 +60,61 @@
 		}
 		wordlist.push(word);
 		word = '';
+		checkGameover();
 	};
 
 	const checkWord = (word: string) => {
-		let duration = 2000;
+		const duration = 2000;
 		if (word.length != 5) {
-			toast.push('Not enough letters', {
-				duration
-			});
+			toast.push('Not enough letters', { duration });
 			return false;
-		} else if (!isValidEnglish(word)) {
+		} else if (!isValid(word)) {
 			toast.push('Not in the word list', { duration });
 			return false;
 		}
 		return true;
 	};
-</script>
 
-<svelte:head>
-	<title>Wordle</title>
-</svelte:head>
+	const letterCheck = (key: string): boolean => {
+		return lang === 'en' ? isLetterEnglish(key) : isLetterSerbian(key);
+	};
+
+	const isValid = (word: string): boolean => {
+		return lang === 'en' ? isValidEnglish(word) : isValidSerbian(word);
+	};
+
+	const checkGameover = () => {
+		for (let word of wordlist) {
+			if (word.toLowerCase() === correct.toLowerCase()) {
+				gameState = 1;
+				return;
+			}
+		}
+
+		if (wordlist.length >= 6) {
+			gameState = 2;
+		}
+	};
+</script>
 
 <svelte:window on:keydown|preventDefault={onKeyDown} />
 
-<div>
+<div class="gameover" class:hidden-div={gameState === 0}>
+	<h1>{gameState === 1 ? 'You Won!' : 'You lost.'}</h1>
+	<button
+		onclick={() => {
+			const url = `/${lang}/game`;
+			goto(url, {
+				invalidateAll: true
+			});
+		}}>Play again</button
+	>
+</div>
+<div class="game">
 	<List {correct} size={6} {wordlist} current={word} />
 	<Keyboard
-		custom=""
+		{keyClass}
+		custom={lang === 'sr' ? serbianCyrillicKeys : ''}
 		layout="wordle"
 		on:keydown={onKeyboardEvent}
 		--text-transform="uppercase"
@@ -83,11 +126,51 @@
 </div>
 
 <style>
-	div {
+	.gameover {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		margin: 10px;
+	}
+
+	.gameover h1 {
+		font-weight: bold;
+		font-size: 1.2rem;
+	}
+
+	button {
+		padding: 0.5em 1em;
+		border: 3px solid var(--text-color);
+		color: var(--text-color);
+		border-radius: 5px;
+		font-size: 1rem;
+		transition: background-color 0.2s ease;
+		text-transform: uppercase;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	button:hover,
+	button:focus {
+		color: var(--background-color);
+		background-color: var(--text-color);
+	}
+
+	.hidden-div {
+		visibility: hidden;
+	}
+
+	.game {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-around;
 		height: 100%;
+	}
+
+	:global(.key.clicked) {
+		background-color: color-mix(in srgb, var(--button-color), black 40%);
+		color: var(--text-contrast-color);
 	}
 </style>

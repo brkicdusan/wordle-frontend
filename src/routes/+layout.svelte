@@ -4,10 +4,15 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Navbar from '../components/header/Header.svelte';
 	let theme = $state(data.theme);
+	let lang = $state(data.lang);
 </script>
 
+<svelte:head>
+	<title>Wordle</title>
+</svelte:head>
+
 <div class={theme}>
-	<Navbar bind:theme />
+	<Navbar bind:theme bind:lang />
 	<main>
 		{@render children()}
 	</main>
@@ -33,6 +38,7 @@
 		--correct-color: #73b851;
 		--yellow-color: #f3c237;
 		--wrong-color: gray;
+		--button-color: #efefef;
 	}
 
 	.dark {
@@ -55,6 +61,7 @@
 			--correct-color: #73b851;
 			--yellow-color: #f3c237;
 			--wrong-color: gray;
+			--button-color: #efefef;
 		}
 	}
 
@@ -77,5 +84,6 @@
 		align-items: center;
 		flex-grow: 1;
 		background-color: var(--background-color);
+		color: var(--text-color);
 	}
 </style>
