@@ -101,7 +101,7 @@
 <svelte:window on:keydown|preventDefault={onKeyDown} />
 
 <div class="gameover" class:hidden-div={gameState === 0}>
-	<h1>{gameState === 1 ? 'You Won!' : 'You lost.'}</h1>
+	<h1>{gameState === 1 ? 'You Won!' : `You lost. Correct word was ${correct}`}</h1>
 	<button
 		onclick={() => {
 			const url = `/${lang}/game`;
