@@ -37,6 +37,8 @@
 		flex-direction: column;
 		align-content: center;
 		align-items: center;
+		width: 60%;
+		min-width: 300px;
 	}
 
 	.word {
