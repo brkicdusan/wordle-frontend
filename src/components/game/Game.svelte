@@ -1,22 +1,28 @@
 <script lang="ts">
-	import List from './List.svelte';
 	import Keyboard from '../../../node_modules/svelte-keyboard';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { isLetterEnglish, isLetterSerbian, isValidEnglish, isValidSerbian } from '$lib/wordCheck';
 	import { serbianCyrillicKeys } from '$lib/keyboard';
 	import { goto } from '$app/navigation';
+	import Display from './Display.svelte';
 
 	let {
 		correct,
 		lang
 	}: {
-		correct: string;
+		correct: string | string[];
 		lang: string;
 	} = $props();
 
 	let word = $state('');
 	let wordlist: string[] = $state([]);
 	let gameState = $state(0); // 0 - playing, 1 - won, 2 - lost
+	let size = $derived.by(() => {
+		if (typeof correct === 'string') {
+			return 6;
+		}
+		return correct.length + 5;
+	});
 
 	let keyClass = $derived.by(() => {
 		let res: Record<string, string> = {};
@@ -85,6 +91,12 @@
 	};
 
 	const checkGameover = () => {
+		if (typeof correct === 'string') checkGameoverSingle();
+		else checkGameoverMultiple();
+	};
+	const checkGameoverSingle = () => {
+		if (typeof correct !== 'string') return;
+
 		for (let word of wordlist) {
 			if (word.toLowerCase() === correct.toLowerCase()) {
 				gameState = 1;
@@ -92,7 +104,29 @@
 			}
 		}
 
-		if (wordlist.length >= 6) {
+		if (wordlist.length >= size) {
+			gameState = 2;
+		}
+	};
+
+	const checkGameoverMultiple = () => {
+		if (typeof correct === 'string') return;
+
+		let correctCount = 0;
+		for (let correctWord of correct) {
+			for (let word of wordlist) {
+				if (word.toLowerCase() === correctWord.toLowerCase()) {
+					correctCount++;
+					break;
+				}
+			}
+		}
+
+		if (correctCount === correct.length) {
+			gameState = 1;
+		}
+
+		if (wordlist.length >= size) {
 			gameState = 2;
 		}
 	};
@@ -104,7 +138,11 @@
 	<h1>{gameState === 1 ? 'You Won!' : `You lost. Correct word was ${correct}`}</h1>
 	<button
 		onclick={() => {
-			const url = `/${lang}/game`;
+			let url = `/${lang}/game`;
+			if (typeof correct !== 'string') {
+				url = `/${lang}/game/${correct.length}`;
+			}
+
 			goto(url, {
 				invalidateAll: true
 			});
@@ -112,7 +150,7 @@
 	>
 </div>
 <div class="game">
-	<List {correct} size={6} {wordlist} current={word} />
+	<Display {correct} {size} {wordlist} current={word} />
 	<Keyboard
 		{keyClass}
 		custom={lang === 'sr' ? serbianCyrillicKeys : ''}
@@ -184,6 +222,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-around;
+		overflow-y: auto;
 		height: 100%;
 	}
 

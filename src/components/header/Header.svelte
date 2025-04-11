@@ -28,7 +28,7 @@
 	}
 
 	nav {
-		height: 50px;
+		min-height: 50px;
 		border-bottom: var(--text-color) solid 1px;
 		display: flex;
 		flex-direction: row;

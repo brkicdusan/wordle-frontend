@@ -1,14 +1,33 @@
+<script lang="ts">
+	let numberOfWords = $state(1);
+
+	let url = $derived.by(() => {
+		if (numberOfWords === 1) {
+			return '/game';
+		}
+		return `/game/${numberOfWords}`;
+	});
+</script>
+
 <div>
-	<a href="/game">Play</a>
+	Number of words:
+	<select bind:value={numberOfWords}>
+		{#each [1, 2, 4, 8, 16] as num (num)}
+			<option value={num} selected={numberOfWords === num}>{num}</option>
+		{/each}
+	</select>
+
+	<a href={url}>Play</a>
 </div>
 
 <style>
 	div {
 		height: 100%;
 		display: flex;
-		align-items: center;
-		justify-content: space-around;
 		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 20px;
 	}
 
 	a {

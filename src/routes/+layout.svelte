@@ -85,5 +85,21 @@
 		flex-grow: 1;
 		background-color: var(--background-color);
 		color: var(--text-color);
+		overflow-y: auto;
+	}
+
+	:global {
+		select {
+			padding: 5px;
+		}
+
+		select:focus {
+			outline: none;
+			border-bottom: 1px solid var(--text-color);
+		}
+		option {
+			background-color: var(--background-color);
+			color: var(--text-color);
+		}
 	}
 </style>
