@@ -3,8 +3,9 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { isLetterEnglish, isLetterSerbian, isValidEnglish, isValidSerbian } from '$lib/wordCheck';
 	import { serbianCyrillicKeys } from '$lib/keyboard';
-	import { goto } from '$app/navigation';
 	import Display from './Display.svelte';
+	import MicroModal from 'micromodal';
+	import GameOverModal from './GameOverModal.svelte';
 
 	let {
 		correct,
@@ -130,23 +131,16 @@
 			gameState = 2;
 		}
 	};
+
+	let gameResult = $derived(gameState === 1 ? 'You Won!' : `You lost.`);
 </script>
 
 <svelte:window on:keydown|preventDefault={onKeyDown} />
 
+<GameOverModal {gameResult} {correct} {lang} />
 <div class="gameover" class:hidden-div={gameState === 0}>
-	<h1>{gameState === 1 ? 'You Won!' : `You lost.\n Correct answer was ${correct}`}</h1>
-	<button
-		onclick={() => {
-			let url = `/${lang}/game`;
-			if (typeof correct !== 'string') {
-				url = `/${lang}/game/${correct.length}`;
-			}
-
-			goto(url, {
-				invalidateAll: true
-			});
-		}}>Play again</button
+	<button onclick={() => MicroModal.show('modal-gameover')} tabindex="-1"
+		>Game over! {gameResult}</button
 	>
 </div>
 <div class="game">
@@ -191,11 +185,8 @@
 		max-width: 90%;
 		overflow-x: auto;
 		min-height: 10%;
-	}
-
-	.gameover h1 {
-		font-weight: bold;
-		font-size: 1.2rem;
+		margin-top: 20px;
+		margin-bottom: 20px;
 	}
 
 	button {
@@ -210,8 +201,7 @@
 		cursor: pointer;
 	}
 
-	button:hover,
-	button:focus {
+	button:hover {
 		color: var(--background-color);
 		background-color: var(--text-color);
 	}

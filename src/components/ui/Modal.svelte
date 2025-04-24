@@ -43,6 +43,7 @@
 
 	.modal__container {
 		background-color: var(--background-color);
+		color: var(--text-color);
 		padding: 30px;
 		max-width: 500px;
 		max-height: 100vh;
@@ -83,6 +84,5 @@
 		margin-top: 2rem;
 		margin-bottom: 2rem;
 		line-height: 1.5;
-		color: rgba(0, 0, 0, 0.8);
 	}
 </style>
