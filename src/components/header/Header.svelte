@@ -8,6 +8,7 @@
 </script>
 
 <SettingsModal bind:theme />
+
 <nav>
 	<div class="left">
 		<a href="/">
