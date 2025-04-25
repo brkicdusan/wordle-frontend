@@ -54,5 +54,6 @@
 	button:hover {
 		background-color: var(--text-color);
 		color: var(--background-color);
+		cursor: pointer;
 	}
 </style>

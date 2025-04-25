@@ -7,11 +7,14 @@
 		lang,
 		correct
 	}: { gameResult: string; lang: string; correct: string | string[] } = $props();
+
+	let correctDisplay = $derived(typeof correct === 'string' ? correct : correct.join(', '));
 </script>
 
 <Modal id="modal-gameover" title={gameResult}>
 	<div>
-		{correct}
+		The answer was:
+		{correctDisplay}
 		<button
 			onclick={() => {
 				let url = `/${lang}/game`;
