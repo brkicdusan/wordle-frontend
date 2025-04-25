@@ -125,6 +125,7 @@
 
 		if (correctCount === correct.length) {
 			gameState = 1;
+			return;
 		}
 
 		if (wordlist.length >= size) {

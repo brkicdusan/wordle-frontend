@@ -11,6 +11,7 @@
 
 <Modal id="modal-gameover" title={gameResult}>
 	<div>
+		The answer was:
 		{correct}
 		<button
 			onclick={() => {

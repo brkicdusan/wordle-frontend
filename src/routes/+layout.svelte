@@ -93,10 +93,16 @@
 			padding: 5px;
 		}
 
-		select:focus {
+		select:focus,
+		select:hover {
 			outline: none;
 			border-bottom: 1px solid var(--text-color);
 		}
+
+		select:hover {
+			cursor: pointer;
+		}
+
 		option {
 			background-color: var(--background-color);
 			color: var(--text-color);
