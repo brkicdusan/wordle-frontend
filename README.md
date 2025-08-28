@@ -15,3 +15,7 @@ Wordle clone that supports:
 ## Deployment
 
 I deploy to Coolify on my VPS.
+
+## Backend
+
+Backend is at "<https://github.com/brkicdusan/wordle-backend>"
