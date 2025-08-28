@@ -10,4 +10,8 @@ Wordle clone that supports:
 
 ## Running
 
+`npm run dev`
+
 ## Deployment
+
+I deploy to Coolify on my VPS.
